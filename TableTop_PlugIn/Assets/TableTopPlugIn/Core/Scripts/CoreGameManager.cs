@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class CoreGameManager : MonoBehaviour
 {
-    
+    [Header("Managers")]
+    [SerializeField] private CardsManager cardManager;
+
     public interface IManager
     {
         void Initialize();
         void Reset();
     }
-    public CardsManager cardManager;
 
     #region Unity Methods
 
@@ -19,7 +20,15 @@ public class CoreGameManager : MonoBehaviour
         
     }
 
-    #endregion
+    #endregion Unity Methods
+
+    #region CardButtons
+    public void OnDrawCardButton()
+    {
+        cardManager.DrawCard();
+    }
+
+    #endregion CardButtons
 
     #region CardFunctions
     public void SetupGame()
@@ -36,5 +45,5 @@ public class CoreGameManager : MonoBehaviour
             Debug.Log("Jugador dibujó: " + c.data.cardName);
         }
     }
-    #endregion
+    #endregion CardFunctions
 }
