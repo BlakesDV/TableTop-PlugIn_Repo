@@ -34,7 +34,6 @@ public class CoreGameManager : MonoBehaviour
     public void SetupGame()
     {
         cardManager.Initialize();
-        // if (config.useCards) cardManager.Initialize();
     }
 
     public void PlayerDrawsCard()

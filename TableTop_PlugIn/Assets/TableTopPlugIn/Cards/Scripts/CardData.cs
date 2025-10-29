@@ -6,12 +6,11 @@ using UnityEngine;
 
 public class CardData : ScriptableObject
 {
-    [Header("Información básica")]
     public string cardName;
     public Sprite artwork;
     [TextArea] public string description;
 
-    [Header("Estadísticas")]
+    public int steps;
     public int attack;
     public int defense;
     public int cost;
