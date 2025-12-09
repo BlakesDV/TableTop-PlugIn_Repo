@@ -6,7 +6,7 @@ public class CoreGameManager : MonoBehaviour
 {
     [Header("Managers")]
     [SerializeField] private CardsManager cardManager;
-
+    public TokenManager currentPlayer;
     public interface IManager
     {
         void Initialize();
@@ -23,6 +23,11 @@ public class CoreGameManager : MonoBehaviour
     #endregion Unity Methods
 
     #region CardButtons
+
+    public void DrawChanceCard()
+    {
+        cardManager.DrawAndExecute(cardManager.chanceDeck, currentPlayer, this);
+    }
     public void OnDrawCardButton()
     {
         cardManager.DrawCard();

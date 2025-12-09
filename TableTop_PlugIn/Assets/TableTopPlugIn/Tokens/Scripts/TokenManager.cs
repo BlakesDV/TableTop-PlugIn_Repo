@@ -39,7 +39,7 @@ public class TokenManager : MonoBehaviour
             return;
         }
 
-        int steps = drawnCard.attack; // valor de la carta como pasos
+        int steps = drawnCard.steps;
         Debug.Log($"Carta sacada: {drawnCard.cardName} -> mover {steps} pasos");
         Vector2[] dirs = new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
         Vector2 dir = dirs[Random.Range(0, dirs.Length)];

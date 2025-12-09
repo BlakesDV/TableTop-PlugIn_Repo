@@ -29,8 +29,8 @@ public class Card : MonoBehaviour
         if (artworkImage != null) artworkImage.sprite = data.artwork;
         if (nameText != null) nameText.text = data.cardName;
         if (descriptionText != null) descriptionText.text = data.description;
-        if (attackText != null) attackText.text = data.attack.ToString();
-        if (defenseText != null) defenseText.text = data.defense.ToString();
-        if (costText != null) costText.text = data.cost.ToString();
+        //if (attackText != null) attackText.text = data.attack.ToString();
+        //if (defenseText != null) defenseText.text = data.defense.ToString();
+        //if (costText != null) costText.text = data.cost.ToString();
     }
 }

@@ -214,9 +214,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1720646131}
         m_TargetAssemblyTypeName: CoreGameManager, Assembly-CSharp
-        m_MethodName: PlayerDrawsCard
+        m_MethodName: OnDrawCardButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1821,6 +1821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1720646130}
   - component: {fileID: 1720646129}
+  - component: {fileID: 1720646131}
   m_Layer: 0
   m_Name: CardsManager
   m_TagString: Untagged
@@ -1862,6 +1863,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1720646131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720646128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d27e2e2a34aa394b9275dfe1edd8cb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardManager: {fileID: 1720646129}
 --- !u!1 &1818540087
 GameObject:
   m_ObjectHideFlags: 0

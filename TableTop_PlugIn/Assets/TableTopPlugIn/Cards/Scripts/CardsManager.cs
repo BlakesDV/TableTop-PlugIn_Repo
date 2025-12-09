@@ -20,7 +20,16 @@ public class CardsManager : MonoBehaviour, IManager
     [SerializeField] private float spacing = 150f;
 
     public event Action<Card> OnCardDrawn;
+    public DeckManager chanceDeck;
+    public DeckManager communityDeck;
+    public CardEffects registry;
 
+    public void DrawAndExecute(DeckManager deck, TokenManager player, CoreGameManager game)
+    {
+        CardData card = deck.Draw();
+        var effect = registry.GetEffect(card.effectId);
+        effect.Execute(card, player, game);
+    }
     public void Initialize()
     {
         foreach (Card card in hand)
