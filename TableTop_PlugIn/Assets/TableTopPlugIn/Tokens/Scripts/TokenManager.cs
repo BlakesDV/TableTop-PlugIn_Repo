@@ -3,7 +3,7 @@ using UnityEngine;
 public class TokenManager : MonoBehaviour
 {
     public TokenBasicFunctions[] tokens;
-    public RandomBoardGenerator boardGenerator;
+    public BoardGenerator boardGenerator;
     public CardsManager cardsManager;
 
     public void MoveToken(TokenBasicFunctions token, int steps, Vector2 direction)

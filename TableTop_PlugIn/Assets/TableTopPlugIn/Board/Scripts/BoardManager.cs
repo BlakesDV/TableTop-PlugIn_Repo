@@ -1,38 +1,45 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BoardManager : MonoBehaviour
 {
-    #region References
-    [SerializeField] private RandomBoardGenerator boardGenerator;
-    [SerializeField] private Button createButton;
-    [SerializeField] private Button clearButton;
-    #endregion
+    public BoardGenerator boardGenerator;
+    public BoardGraph boardGraph;
 
-    void Start()
+    public void CreateRandomBoard()
     {
-        if (createButton != null)
-            createButton.onClick.AddListener(OnGenerateBoard);
-
-        if (clearButton != null)
-            clearButton.onClick.AddListener(OnClearBoard);
+        boardGenerator.GenerateRandomBoard();
+        boardGraph.BuildGraph(
+            boardGenerator.TileGrid,
+            boardGenerator.width,
+            boardGenerator.height
+        );
     }
 
-    public void OnGenerateBoard()
+    public void CreateLoopBoard()
     {
-        if (boardGenerator != null)
-        {
-            boardGenerator.GenerateBoard();
-            Debug.Log("Tablero generado desde BoardManager");
-        }
-        else
-        {
-            Debug.LogWarning("No hay ProceduralBoardGenerator asignado al BoardManager.");
-        }
+        boardGenerator.GenerateLoopBoard();
+        boardGraph.BuildGraph(
+            boardGenerator.TileGrid,
+            boardGenerator.width,
+            boardGenerator.height
+        );
     }
 
-    public void OnClearBoard()
+    public void CreateOrderedBoard()
+    {
+        boardGenerator.GenerateOrderedBoard();
+        boardGraph.BuildGraph(
+            boardGenerator.TileGrid,
+            boardGenerator.width,
+            boardGenerator.height
+        );
+    }
+
+    public void ClearBoard()
     {
         boardGenerator.ClearBoard();
+        boardGraph.allTiles.Clear();
+        boardGraph.head = null;
+        boardGraph.tail = null;
     }
 }

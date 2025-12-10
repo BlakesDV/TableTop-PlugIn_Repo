@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TokenBasicFunctions : MonoBehaviour
 {
-    public RandomBoardGenerator boardGenerator;
+    public BoardGenerator boardGenerator;
     public int posX = 0;
     public int posY = 0;
     public float heightOffset = 0.5f;
