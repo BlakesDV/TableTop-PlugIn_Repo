@@ -1,49 +1,38 @@
 using UnityEngine;
+using System.Collections;
 
 public class TokenManager : MonoBehaviour
 {
-    public TokenBasicFunctions[] tokens;
-    public BoardGenerator boardGenerator;
-    public CardsManager cardsManager;
+    [Header("References")]
+    public TokenBasicFunctions token;
+    public BoardGraph boardGraph;
+    public DiceController dice;
 
-    public void MoveToken(TokenBasicFunctions token, int steps, Vector2 direction)
+    [Header("Dice Settings")]
+    public float throwForce = 8f;
+    public float torqueForce = 10f;
+
+    public void RollDiceAndMoveTokenUI()
     {
-        token.MoveSteps(steps, direction);
-    }
-
-    public void MoveRandomToken()
-    {
-        if (tokens.Length == 0) return;
-
-        TokenBasicFunctions token = tokens[Random.Range(0, tokens.Length)];
-        int steps = Random.Range(1, 7);
-
-        Vector2[] dirs = new Vector2[]
+        if (token == null || dice == null || boardGraph == null)
         {
-            Vector2.up,    // Norte
-            Vector2.down,  // Sur
-            Vector2.left,  // Oeste
-            Vector2.right  // Este
-        };
-        Vector2 dir = dirs[Random.Range(0, dirs.Length)];
-
-        MoveToken(token, steps, dir);
-        Debug.Log($"Token {token.name} avanza {steps} pasos hacia {dir}");
-    }
-    public void MoveTokenByCard(TokenBasicFunctions token)
-    {
-        CardData drawnCard = cardsManager.DrawCardData();
-        if (drawnCard == null)
-        {
-            Debug.LogWarning("No hay cartas disponibles.");
+            Debug.LogWarning("Token, dado o BoardGraph no asignado.");
             return;
         }
 
-        int steps = drawnCard.steps;
-        Debug.Log($"Carta sacada: {drawnCard.cardName} -> mover {steps} pasos");
-        Vector2[] dirs = new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
-        Vector2 dir = dirs[Random.Range(0, dirs.Length)];
+        StartCoroutine(RollAndMoveCoroutine());
+    }
 
-        token.MoveSteps(steps, dir);
+    private IEnumerator RollAndMoveCoroutine()
+    {
+        dice.Throw(throwForce, torqueForce);
+        yield return new WaitUntil(() => dice.HasStopped);
+        if (token.currentTile == null)
+        {
+            token.SnapToTile(boardGraph.head);
+        }
+        token.MoveStepsByIndex(dice.FinalValue);
+
+        Debug.Log($"Token {token.name} avanza {dice.FinalValue} pasos según el dado {dice.diceData.diceName}.");
     }
 }

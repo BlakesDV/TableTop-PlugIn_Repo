@@ -16,6 +16,7 @@ public class BoardGenerator : MonoBehaviour
     public Transform boardParent;
 
     public Tile[,] TileGrid { get; private set; }
+    public BoardGraph boardGraph;
 
     public void GenerateRandomBoard()
     {
@@ -117,5 +118,20 @@ public class BoardGenerator : MonoBehaviour
     { 
         GameObject tile = GetTileAt(x, y); 
         return tile != null ? tile.transform.position : Vector3.zero; 
+    }
+    public Tile GetTileAtIndex(int index)
+    {
+        if (boardGraph == null || boardGraph.allTiles.Count == 0)
+            return null;
+
+        if (index < 0 || index >= boardGraph.allTiles.Count)
+            return null;
+
+        return boardGraph.allTiles[index];
+    }
+    public Vector3 GetTilePosition(int index)
+    {
+        Tile tile = GetTileAtIndex(index);
+        return tile != null ? tile.transform.position : Vector3.zero;
     }
 }

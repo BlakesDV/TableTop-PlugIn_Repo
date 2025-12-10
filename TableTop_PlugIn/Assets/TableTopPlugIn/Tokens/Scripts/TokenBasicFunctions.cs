@@ -3,65 +3,80 @@ using System.Collections;
 
 public class TokenBasicFunctions : MonoBehaviour
 {
-    public BoardGenerator boardGenerator;
-    public int posX = 0;
-    public int posY = 0;
+    [Header("References")]
+    public BoardGraph boardGraph;
     public float heightOffset = 0.5f;
     public float moveSpeed = 5f;
-    public Vector2Int gridPosition;
 
+    [HideInInspector] public Tile currentTile;
     private bool isMoving = false;
 
     void Start()
     {
-        UpdatePosition();
+        // Inicializar en el head del BoardGraph si existe
+        if (boardGraph != null && boardGraph.head != null)
+        {
+            SnapToTile(boardGraph.head);
+        }
     }
 
-    void UpdatePosition()
+    public void SnapToTile(Tile tile)
     {
-        GameObject tile = boardGenerator.GetTileAt(posX, posY);
-        if (tile != null)
-            transform.position = tile.transform.position + Vector3.up * heightOffset;
+        if (tile == null)
+        {
+            Debug.LogError("No se puede asignar null a currentTile.");
+            return;
+        }
+
+        currentTile = tile;
+        transform.position = tile.transform.position + Vector3.up * heightOffset;
     }
 
-    public void MoveSteps(int steps, Vector2 direction)
+    #region Movimiento por índice (lista ligada)
+    public void MoveStepsByIndex(int steps)
     {
+        if (currentTile == null)
+        {
+            Debug.LogError("Token no tiene currentTile asignado. No puede moverse.");
+            return;
+        }
+
         if (!isMoving)
-            StartCoroutine(MoveCoroutine(steps, direction));
+            StartCoroutine(MoveStepsByIndexCoroutine(steps));
     }
 
-    private IEnumerator MoveCoroutine(int steps, Vector2 direction)
+    private IEnumerator MoveStepsByIndexCoroutine(int steps)
     {
         isMoving = true;
 
         for (int i = 0; i < steps; i++)
         {
-            int targetX = posX + (int)direction.x;
-            int targetY = posY + (int)direction.y;
-
-            GameObject tile = boardGenerator.GetTileAt(targetX, targetY);
-
-            if (tile == null)
+            if (currentTile.next == null)
             {
-                Debug.Log("No se puede avanzar más en esa dirección.");
+                Debug.Log("Token alcanzó el final del tablero.");
                 break;
             }
 
-            Vector3 startPos = transform.position;
-            Vector3 endPos = tile.transform.position + Vector3.up * heightOffset;
-            float t = 0f;
-
-            while (t < 1f)
-            {
-                t += Time.deltaTime * moveSpeed;
-                transform.position = Vector3.Lerp(startPos, endPos, t);
-                yield return null;
-            }
-
-            posX = targetX;
-            posY = targetY;
+            Tile nextTile = currentTile.next;
+            yield return MoveToTile(nextTile);
+            currentTile = nextTile;
         }
 
         isMoving = false;
     }
+
+    private IEnumerator MoveToTile(Tile tile)
+    {
+        Vector3 start = transform.position;
+        Vector3 end = tile.transform.position + Vector3.up * heightOffset;
+        float t = 0f;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime * moveSpeed;
+            transform.position = Vector3.Lerp(start, end, t);
+            yield return null;
+        }
+    }
+    #endregion
 }

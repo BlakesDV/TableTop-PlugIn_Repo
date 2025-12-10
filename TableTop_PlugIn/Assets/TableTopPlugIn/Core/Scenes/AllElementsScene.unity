@@ -503,8 +503,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1302421442}
-        m_TargetAssemblyTypeName: RandomBoardGenerator, Assembly-CSharp
+      - m_Target: {fileID: 1302421443}
+        m_TargetAssemblyTypeName: BoardManager, Assembly-CSharp
         m_MethodName: ClearBoard
         m_Mode: 1
         m_Arguments:
@@ -1080,6 +1080,9 @@ MonoBehaviour:
   cardPrefab: {fileID: 5527885801958811660, guid: 24e87fbb6658e344da1db7172514d627, type: 3}
   handAreaParent: {fileID: 1694514772}
   spacing: 150
+  chanceDeck: {fileID: 0}
+  communityDeck: {fileID: 0}
+  registry: {fileID: 0}
 --- !u!1 &247210024
 GameObject:
   m_ObjectHideFlags: 0
@@ -2147,12 +2150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5b383f433674e54db51450a7a5e8742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardGenerator: {fileID: 1302421442}
-  posX: 0
-  posY: 0
+  boardGraph: {fileID: 0}
   heightOffset: 0.5
   moveSpeed: 5
-  gridPosition: {x: 0, y: 0}
+  currentTile: {fileID: 0}
 --- !u!136 &360516502
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2244,6 +2245,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &424700111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 424700112}
+  - component: {fileID: 424700113}
+  m_Layer: 0
+  m_Name: BoardGraph
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &424700112
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424700111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1302421441}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &424700113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424700111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 866d6d61650526d44b9045bb28173b1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allTiles: []
+  head: {fileID: 0}
+  tail: {fileID: 0}
+  loopLinkedList: 1
 --- !u!1 &429470437
 GameObject:
   m_ObjectHideFlags: 0
@@ -2715,6 +2764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardManager: {fileID: 236830046}
+  currentPlayer: {fileID: 1595488232}
 --- !u!1 &718985727
 GameObject:
   m_ObjectHideFlags: 0
@@ -4725,7 +4775,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 424700112}
   m_Father: {fileID: 1642669062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1302421442
@@ -4743,13 +4794,16 @@ MonoBehaviour:
   width: 5
   height: 5
   tileSize: 2
-  tilePrefabs:
-  - {fileID: 919132149155446097, guid: d55da8f71d509c54894f3c190186cfb7, type: 3}
-  - {fileID: 919132149155446097, guid: d8d2733f84634fc4e8f27521a49978ce, type: 3}
-  - {fileID: 919132149155446097, guid: 8ca92995fd37b9d438e708b46f7c68c9, type: 3}
-  - {fileID: 919132149155446097, guid: e7f2cb8a0332143439255c4d65d8b60c, type: 3}
-  - {fileID: 919132149155446097, guid: c0f699b68c340ab4aafbbda38e1fea3f, type: 3}
+  randomTilePrefabs: []
+  loopTilePrefabs:
+  - {fileID: 5420783076685752044, guid: 53edb918d10fcc642a11c6a7a49ae8a8, type: 3}
+  - {fileID: 5999226425882513811, guid: 03b629565c2513848b318cae04c047a9, type: 3}
+  - {fileID: 2011760089375784482, guid: 37f79863bd190c64d9246e1d6b3bcfdd, type: 3}
+  - {fileID: 6470334318885002030, guid: cde2886fb5fecdd4db85a2afd905dd62, type: 3}
+  - {fileID: 1064455754923184493, guid: ecfbddf45a060ee4ab8cb94f42e5b8fd, type: 3}
+  orderedTilePrefabs: []
   boardParent: {fileID: 1361439926}
+  boardGraph: {fileID: 424700113}
 --- !u!114 &1302421443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4763,8 +4817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardGenerator: {fileID: 1302421442}
-  createButton: {fileID: 1925937151}
-  clearButton: {fileID: 77046515}
+  boardGraph: {fileID: 424700113}
 --- !u!1 &1332343281
 GameObject:
   m_ObjectHideFlags: 0
@@ -4986,7 +5039,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1302421443}
         m_TargetAssemblyTypeName: BoardManager, Assembly-CSharp
-        m_MethodName: OnGenerateBoard
+        m_MethodName: CreateLoopBoard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5952,10 +6005,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c879abbfaba80842b00a94495c6e62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tokens:
-  - {fileID: 7667691969151775708}
-  boardGenerator: {fileID: 1302421442}
-  cardsManager: {fileID: 236830046}
+  token: {fileID: 7667691969151775708}
+  boardGraph: {fileID: 424700113}
+  dice: {fileID: 873386252095502186}
+  throwForce: 8
+  torqueForce: 10
 --- !u!1 &1642669061
 GameObject:
   m_ObjectHideFlags: 0
@@ -6439,7 +6493,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1595488232}
         m_TargetAssemblyTypeName: TokenManager, Assembly-CSharp
-        m_MethodName: MoveRandomToken
+        m_MethodName: RollDiceAndMoveTokenUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8429,7 +8483,7 @@ GameObject:
   - component: {fileID: 6999382806943525217}
   - component: {fileID: 7667691969151775708}
   m_Layer: 0
-  m_Name: pawn_02
+  m_Name: Token
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8447,12 +8501,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5b383f433674e54db51450a7a5e8742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardGenerator: {fileID: 1302421442}
-  posX: 0
-  posY: 0
+  boardGraph: {fileID: 424700113}
   heightOffset: 1
   moveSpeed: 5
-  gridPosition: {x: 0, y: 0}
+  currentTile: {fileID: 0}
 --- !u!65 &7786650491481781140
 BoxCollider:
   m_ObjectHideFlags: 0
